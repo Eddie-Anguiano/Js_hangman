@@ -3,3 +3,140 @@
 	margin: 0;
 	padding: 0;
 }
+
+
+
+
+/*-------------ENTER GUESS-------------*/
+input {
+	position: absolute;
+	top: 5rem;
+	left: 6rem;
+	width: 8rem;
+}
+
+
+.enter_btn {
+	position: absolute;
+	top: 5rem;
+	left: 2rem;
+	width: 4rem;
+}
+
+/*-------------IMAGE CONTAINER-------------*/
+
+
+.image_container {
+	position: relative;
+	height: 75vh;
+	width: 50%;
+	margin: 0 auto;
+}
+
+.image_container > div:not(.head) {
+	background-color: black;
+	position: absolute;
+}
+
+/*-------------GALLOWS-------------*/
+
+.gallow_base {
+	height: 10px;
+	width: 150px;
+	top: 25rem;
+	left: 14rem;
+}
+
+.gallow_stem {
+	height: 350px;
+	width: 10px;
+	left: 19rem;
+	top: 3.5rem;
+
+}
+
+.gallow_top {
+	height: 10px;
+	width: 240px;
+	left: 7rem;
+	top: 2.9rem;
+}
+
+.gallow_rope {
+	height: 100px;
+	width: 6px;
+	left: 9rem;
+	top: 2.9rem
+}
+
+/*-------------STICK FIGURE-------------*/
+
+.head {
+	position: absolute;
+	height: 80px;
+	width: 80px;
+	border: 3px solid black;
+	border-radius: 50%;
+	top: 9rem;
+	left: 6.7rem;
+}
+
+.body {
+	height: 100px;
+	width: 3px;
+	top: 14rem;
+	left: 9.1rem;
+}
+
+.right_arm {
+	height: 3px;
+	width: 60px;
+	top: 14.8rem;
+	left: 9.1rem;
+	transform: rotate(10deg);
+	transform-origin: left;
+}
+
+.left_arm {
+	height: 3px;
+	width: 60px;
+	top: 14.8rem;
+	left: 5.4rem;
+	transform: rotate(-10deg);
+	transform-origin: right;
+}
+
+.left_leg {
+	height: 3px;
+	width: 60px;
+	top: 20rem;
+	left: 5.4rem;
+	transform: rotate(-50deg);
+	transform-origin: right;
+}
+
+.right_leg {
+	height: 3px;
+	width: 60px;
+	top: 20rem;
+	left: 5.4rem;
+	transform: rotate(225deg);
+	transform-origin: right;
+}
+
+/*-------------ANSWER TABLE-------------*/
+
+.answer {
+	table-layout: fixed;
+	width: 70%;
+	margin: 0 auto;
+	border-collapse: separate;
+	border-spacing: 1rem;
+}
+
+.answer td {
+	border-bottom: 1px solid black;
+	text-align: center;
+	color: transparent;
+
+}

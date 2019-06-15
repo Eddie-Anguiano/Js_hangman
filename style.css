@@ -34,11 +34,16 @@ input {
 }
 
 .image_container > div:not(.head) {
-	background-color: black;
+	/*	background-color: black;
+	*/
 	position: absolute;
 }
 
 /*-------------GALLOWS-------------*/
+
+[class^="gallow"] {
+	background-color: black;
+}
 
 .gallow_base {
 	height: 10px;
@@ -70,6 +75,11 @@ input {
 }
 
 /*-------------STICK FIGURE-------------*/
+
+div:nth-child(n + 5) {
+	background-color: transparent;
+	border-color: transparent;
+}
 
 .head {
 	position: absolute;

@@ -1,13 +1,14 @@
+/*eslint-env es6*/
+
 var document, console, prompt;
 var UiController = (function () {
 	"use strict";
-	var wrongCounter = 0;
-
-	var DOMstrings = {
-		answerTable: ".answer",
-		enterBtn: ".enter_btn",
-		guessInput: ".guess_input"
-	};
+	var wrongCounter = 0,
+		DOMstrings = {
+			answerTable: ".answer",
+			enterBtn: ".enter_btn",
+			guessInput: ".guess_input"
+		};
 
 
 	return {
@@ -42,7 +43,11 @@ var UiController = (function () {
 				});
 			} else {
 				wrongCounter += 1;
-				document.querySelector(`div:nth-child(${wrongCounter + 4})`).style.backgroundColor = "black";
+				if (wrongCounter === 1) {
+					document.querySelector(`div:nth-child(${wrongCounter + 4})`).style.borderColor = "black";
+				} else {
+					document.querySelector(`div:nth-child(${wrongCounter + 4})`).style.backgroundColor = "black";
+				}
 			}
 			document.querySelector(DOMstrings.guessInput).value = "";
 			document.querySelector(DOMstrings.guessInput).focus();

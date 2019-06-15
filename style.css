@@ -76,16 +76,15 @@ input {
 
 /*-------------STICK FIGURE-------------*/
 
-div:nth-child(n + 5) {
+div:nth-child(n + 6) {
 	background-color: transparent;
-	border-color: transparent;
 }
 
 .head {
 	position: absolute;
 	height: 80px;
 	width: 80px;
-	border: 3px solid black;
+	border: 3px solid transparent;
 	border-radius: 50%;
 	top: 9rem;
 	left: 6.7rem;

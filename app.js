@@ -10,6 +10,13 @@ var UiController = (function () {
 			guessInput: ".guess_input"
 		};
 
+	function displayEndScreen(message) {
+		var div = document.createElement("div");
+		div.textContent = message;
+		div.classList.add("end");
+		document.querySelector("body").appendChild(div);
+	}
+
 
 	return {
 		displayTableData: function (word) {
@@ -51,6 +58,13 @@ var UiController = (function () {
 			}
 			document.querySelector(DOMstrings.guessInput).value = "";
 			document.querySelector(DOMstrings.guessInput).focus();
+		},
+		displayWinScreen: function () {
+			displayEndScreen("YOU WIN!");
+
+		},
+		displayLostScreen: function () {
+			displayEndScreen("YOU LOSE!");
 		}
 
 	};
@@ -86,7 +100,6 @@ var dataController = (function () {
 				});
 			} else {
 				wrongCounter += 1;
-				console.log(wrongCounter);
 			}
 		},
 		getMatches: function (answer, letterGuess) {
@@ -101,7 +114,20 @@ var dataController = (function () {
 				}
 			});
 			return matches;
+		},
+		checkIfWon: function () {
+			if (data.every(function (item) {
+					return item.guessed;
+				})) {
+				return true;
+			}
+		},
+		checkIfLost: function () {
+			if (wrongCounter === 6) {
+				return true;
+			}
 		}
+
 
 	};
 }());
@@ -121,6 +147,12 @@ var controller = (function (uiCtrl, dataCtrl) {
 			matches = dataCtrl.getMatches(word, guess);
 		dataCtrl.updateData(matches);
 		uiCtrl.updateUi(matches);
+
+		if (dataCtrl.checkIfWon()) {
+			uiCtrl.displayWinScreen();
+		} else if (dataCtrl.checkIfLost()) {
+			uiCtrl.displayLostScreen();
+		}
 	}
 
 	return {

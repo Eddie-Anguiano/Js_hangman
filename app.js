@@ -4,10 +4,11 @@ var document, console, prompt;
 var UiController = (function () {
 	"use strict";
 	var wrongCounter = 0,
+		validLetter = /^[A-Za-z]+$/,
 		DOMstrings = {
 			answerTable: ".answer",
-			enterBtn: ".enter_btn",
-			guessInput: ".guess_input"
+			guessInput: ".guess_input",
+			letterDivs: ".letter"
 		};
 
 	function displayEndScreen(message) {
@@ -17,6 +18,15 @@ var UiController = (function () {
 		document.querySelector("body").appendChild(div);
 	}
 
+	function disableUi() {
+		document.querySelector(DOMstrings.guessInput).disabled = true;
+	}
+
+
+	function focusInput() {
+		document.querySelector(DOMstrings.guessInput).value = "";
+		document.querySelector(DOMstrings.guessInput).focus();
+	}
 
 	return {
 		displayTableData: function (word) {
@@ -31,14 +41,14 @@ var UiController = (function () {
 		},
 		getWord: function () {
 			var word = prompt("Enter Word or Phrase");
-			return word;
+			return word.toLowerCase();
 		},
 		getDomStrings: function () {
 			return DOMstrings;
 		},
 		getGuess: function () {
-			if (document.querySelector(DOMstrings.guessInput).value) {
-				return document.querySelector(DOMstrings.guessInput).value;
+			if (document.querySelector(DOMstrings.guessInput).value.match(validLetter) && document.querySelector(DOMstrings.guessInput).value.length === 1) {
+				return document.querySelector(DOMstrings.guessInput).value.toLowerCase();
 			}
 		},
 		updateUi: function (matchesArray) {
@@ -56,15 +66,37 @@ var UiController = (function () {
 					document.querySelector(`div:nth-child(${wrongCounter + 4})`).style.backgroundColor = "black";
 				}
 			}
-			document.querySelector(DOMstrings.guessInput).value = "";
-			document.querySelector(DOMstrings.guessInput).focus();
+			focusInput();
+		},
+		updateLetterBlock: function (guess, matchesArray) {
+			var letterDiv = document.querySelectorAll(DOMstrings.letterDivs);
+
+			for (var i = 0; i < letterDiv.length; i++) {
+				letterDiv[i].classList.add(letterDiv[i].textContent.toLowerCase());
+			}
+
+			if (matchesArray.length === 0) {
+				document.querySelector(`.${guess}`).style.color = "red";
+			}
+
+
+			for (var j = 0; j < matchesArray.length; j++) {
+				if (matchesArray[j].letter && matchesArray[j].letter === guess) {
+					document.querySelector(`.${guess}`).style.color = "green";
+				}
+			}
+
 		},
 		displayWinScreen: function () {
 			displayEndScreen("YOU WIN!");
-
+			disableUi();
 		},
 		displayLostScreen: function () {
 			displayEndScreen("YOU LOSE!");
+			disableUi();
+		},
+		focusOnInput: function () {
+			focusInput();
 		}
 
 	};
@@ -74,7 +106,9 @@ var dataController = (function () {
 	"use strict";
 
 	var data = [],
-		wrongCounter = 0;
+		wrongCounter = 0,
+		guessArray = [];
+
 
 
 	return {
@@ -126,6 +160,16 @@ var dataController = (function () {
 			if (wrongCounter === 6) {
 				return true;
 			}
+		},
+		isRepeat: function (guess) {
+			if (guessArray.indexOf(guess) === -1) {
+				guessArray.push(guess);
+				console.log(guessArray);
+
+				return false;
+			} else {
+				return true;
+			}
 		}
 
 
@@ -135,29 +179,45 @@ var dataController = (function () {
 var controller = (function (uiCtrl, dataCtrl) {
 	"use strict";
 	var word = uiCtrl.getWord();
+	var active = true;
 
 	function setUpEventListeners() {
-		var DOM = uiCtrl.getDomStrings();
 
-		document.querySelector(DOM.enterBtn).addEventListener("click", submitGuess);
+		document.addEventListener("keyup", function () {
+			submitGuess();
+		});
 	}
 
 	function submitGuess() {
-		var guess = uiCtrl.getGuess(),
-			matches = dataCtrl.getMatches(word, guess);
-		dataCtrl.updateData(matches);
-		uiCtrl.updateUi(matches);
 
-		if (dataCtrl.checkIfWon()) {
-			uiCtrl.displayWinScreen();
-		} else if (dataCtrl.checkIfLost()) {
-			uiCtrl.displayLostScreen();
+		if (active) {
+			var guess = uiCtrl.getGuess();
+
+			if (!dataCtrl.isRepeat(guess) && guess) {
+				var matches = dataCtrl.getMatches(word, guess);
+
+				dataCtrl.updateData(matches);
+				uiCtrl.updateUi(matches);
+				uiCtrl.updateLetterBlock(guess, matches);
+
+				if (dataCtrl.checkIfWon()) {
+					uiCtrl.displayWinScreen();
+					active = false;
+				} else if (dataCtrl.checkIfLost()) {
+					uiCtrl.displayLostScreen();
+					active = false;
+				}
+			} else {
+				uiCtrl.focusOnInput();
+			}
+
+
 		}
 	}
 
 	return {
 		init: function () {
-
+			uiCtrl.focusOnInput();
 			uiCtrl.displayTableData(word);
 			dataCtrl.createDataStructure(word);
 			setUpEventListeners();

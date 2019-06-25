@@ -4,15 +4,20 @@
 	padding: 0;
 }
 
-
-
-
 /*-------------ENTER GUESS-------------*/
+
 input {
 	position: absolute;
 	top: 5rem;
 	left: 6rem;
 	width: 8rem;
+	background-color: transparent;
+	color: transparent;
+	border: none;
+}
+
+input:focus {
+	outline: none;
 }
 
 
@@ -142,6 +147,7 @@ div:nth-child(n + 6) {
 	margin: 0 auto;
 	border-collapse: separate;
 	border-spacing: 1rem;
+	font-size: 2em;
 }
 
 .answer td {
@@ -152,6 +158,30 @@ div:nth-child(n + 6) {
 	width: 40px;
 	max-width: 40px
 }
+
+/*-------------LETTERS GUESSED BOX-------------*/
+
+.letterFixedWrapper {
+	position: fixed;
+	height: 50vh;
+	width: 10rem;
+	top: 9rem;
+	left: 2rem;
+}
+
+.letterWrapper {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.letter {
+	font-size: 2rem;
+	font-weight: bold;
+	color: lightgray;
+	height: 2.5rem;
+	width: 2.5rem
+}
+
 
 /*-------------END SCREEN-------------*/
 
